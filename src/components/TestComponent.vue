@@ -304,7 +304,7 @@
   }
   </script>
   
-  <style scoped>
+  <style lang="scss">
   .drop-zone {
     min-height: 60px;
     border: 2px dashed #bdbdbd;
