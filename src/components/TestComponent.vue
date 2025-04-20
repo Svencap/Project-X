@@ -142,21 +142,19 @@
 
         <!-- Exercise 10 -->
         <v-card outlined class="mb-6 pa-4">
-          <h2 class="text-h6 mb-4">Exercise 10. Choose one of the two words to get a phrase:</h2>
+          <h2 class="text-h6 mb-4">Exercise 10. Choose one of the two words to complete the phrase:</h2>
+
           <div class="mb-4">
+            <h3 class="subtitle-1 mb-2">Fashion ___</h3>
             <v-radio-group v-model="answers.ex10_1">
-              <v-radio label="Fashion" value="a"></v-radio>
-              <v-radio label="Trendy" value="b"></v-radio>
+              <v-radio label="Trendy" value="a"></v-radio>
+              <v-radio label="Well-dressed" value="b"></v-radio>
             </v-radio-group>
           </div>
+
           <div class="mb-4">
+            <h3 class="subtitle-1 mb-2">Eyes ___</h3>
             <v-radio-group v-model="answers.ex10_2">
-              <v-radio label="Well-dressed" value="a"></v-radio>
-              <v-radio label="Eyes" value="b"></v-radio>
-            </v-radio-group>
-          </div>
-          <div>
-            <v-radio-group v-model="answers.ex10_3">
               <v-radio label="comical" value="a"></v-radio>
               <v-radio label="sharp" value="b"></v-radio>
             </v-radio-group>
@@ -229,7 +227,6 @@
           ex9: null,
           ex10_1: null,
           ex10_2: null,
-          ex10_3: null,
           ex11_1: [],
           ex11_2: []
         },
@@ -280,9 +277,8 @@
           ex8_4: 'dedicated',
           ex8_5: 'Creative',
           ex9: 'c', // ooOoo
-          ex10_1: 'a', // Fashion
-          ex10_2: 'a', // Well-dressed
-          ex10_3: 'a', // comical
+          ex10_1: 'a', // Fashion Trendy
+          ex10_2: 'b',  // Eyes sharp
           ex11_1: ['a', 'b'],
           ex11_2: ['a', 'b']
         },
@@ -351,8 +347,7 @@
           this.answers.ex9 === this.correctAnswers.ex9,
           // Exercise 10
           this.answers.ex10_1 === this.correctAnswers.ex10_1 &&
-          this.answers.ex10_2 === this.correctAnswers.ex10_2 &&
-          this.answers.ex10_3 === this.correctAnswers.ex10_3,
+          this.answers.ex10_2 === this.correctAnswers.ex10_2,
           // Exercise 11
           JSON.stringify([...this.answers.ex11_1].sort()) === JSON.stringify(this.correctAnswers.ex11_1.sort()) &&
           JSON.stringify([...this.answers.ex11_2].sort()) === JSON.stringify(this.correctAnswers.ex11_2.sort())
