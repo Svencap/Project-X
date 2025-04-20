@@ -126,6 +126,61 @@
             spirit sparked inspiration in everyone around her, reminding them that art has the power to transform even the most ordinary experiences.
           </p>
         </v-card>
+
+        <!-- Exercise 9 -->
+        <v-card outlined class="mb-6 pa-4">
+          <h2 class="text-h6 mb-4">Exercise 9. Choose the correct accent of the word "personality":</h2>
+          <v-radio-group v-model="answers.ex9">
+            <v-radio label="oooOo" value="a"></v-radio>
+            <v-radio label="Ooooo" value="b"></v-radio>
+            <v-radio label="ooOoo" value="c"></v-radio>
+            <v-radio label="ooooO" value="d"></v-radio>
+            <v-radio label="Ooooo" value="e"></v-radio>
+          </v-radio-group>
+        </v-card>
+
+
+        <!-- Exercise 10 -->
+        <v-card outlined class="mb-6 pa-4">
+          <h2 class="text-h6 mb-4">Exercise 10. Choose one of the two words to get a phrase:</h2>
+          <div class="mb-4">
+            <v-radio-group v-model="answers.ex10_1">
+              <v-radio label="Fashion" value="a"></v-radio>
+              <v-radio label="Trendy" value="b"></v-radio>
+            </v-radio-group>
+          </div>
+          <div class="mb-4">
+            <v-radio-group v-model="answers.ex10_2">
+              <v-radio label="Well-dressed" value="a"></v-radio>
+              <v-radio label="Eyes" value="b"></v-radio>
+            </v-radio-group>
+          </div>
+          <div>
+            <v-radio-group v-model="answers.ex10_3">
+              <v-radio label="comical" value="a"></v-radio>
+              <v-radio label="sharp" value="b"></v-radio>
+            </v-radio-group>
+          </div>
+        </v-card>
+
+
+        <!-- Exercise 11 -->
+        <v-card outlined class="mb-6 pa-4">
+          <h2 class="text-h6 mb-4">Exercise 11. Put questions to the highlighted words:</h2>
+          <p class="mb-4">
+            <strong>Her outfit was incredibly trendy</strong>, making her the center of attention at the party.
+          </p>
+          <v-checkbox v-model="answers.ex11_1" label="What was her outfit like?" value="a"></v-checkbox>
+          <v-checkbox v-model="answers.ex11_1" label="Whose outfit was trendy?" value="b"></v-checkbox>
+          <v-checkbox v-model="answers.ex11_1" label="What made her the center of attention at the party?" value="c"></v-checkbox>
+          
+          <p class="mb-4 mt-6">
+            <strong>The movie was surprisingly comical</strong>, providing a much-needed laugh after a long week.
+          </p>
+          <v-checkbox v-model="answers.ex11_2" label="Was the movie comical?" value="a"></v-checkbox>
+          <v-checkbox v-model="answers.ex11_2" label="Why did the movie make you laugh?" value="b"></v-checkbox>
+          <v-checkbox v-model="answers.ex11_2" label="What was the movie?" value="c"></v-checkbox>
+        </v-card>
         
         <v-btn color="primary" @click="checkAnswers" large class="check-btn">Check Answers</v-btn>
         
@@ -170,7 +225,13 @@
           ex8_2: null,
           ex8_3: null,
           ex8_4: null,
-          ex8_5: null
+          ex8_5: null,
+          ex9: null,
+          ex10_1: null,
+          ex10_2: null,
+          ex10_3: null,
+          ex11_1: [],
+          ex11_2: []
         },
         idiomExercises: {
           a: {
@@ -217,7 +278,13 @@
           ex8_2: 'comical',
           ex8_3: 'thoughtful',
           ex8_4: 'dedicated',
-          ex8_5: 'Creative'
+          ex8_5: 'Creative',
+          ex9: 'c', // ooOoo
+          ex10_1: 'a', // Fashion
+          ex10_2: 'a', // Well-dressed
+          ex10_3: 'a', // comical
+          ex11_1: ['a', 'b'],
+          ex11_2: ['a', 'b']
         },
         results: [],
         score: 0,
@@ -258,8 +325,7 @@
       checkAnswers() {
         this.results = [];
         this.score = 0;
-        
-        // Check each exercise
+
         const exercises = [
           // Exercise 1
           this.answers.ex1 === this.correctAnswers.ex1,
@@ -280,7 +346,16 @@
           this.answers.ex8_2 === this.correctAnswers.ex8_2 &&
           this.answers.ex8_3 === this.correctAnswers.ex8_3 &&
           this.answers.ex8_4 === this.correctAnswers.ex8_4 &&
-          this.answers.ex8_5 === this.correctAnswers.ex8_5
+          this.answers.ex8_5 === this.correctAnswers.ex8_5,
+          // Exercise 9
+          this.answers.ex9 === this.correctAnswers.ex9,
+          // Exercise 10
+          this.answers.ex10_1 === this.correctAnswers.ex10_1 &&
+          this.answers.ex10_2 === this.correctAnswers.ex10_2 &&
+          this.answers.ex10_3 === this.correctAnswers.ex10_3,
+          // Exercise 11
+          JSON.stringify([...this.answers.ex11_1].sort()) === JSON.stringify(this.correctAnswers.ex11_1.sort()) &&
+          JSON.stringify([...this.answers.ex11_2].sort()) === JSON.stringify(this.correctAnswers.ex11_2.sort())
         ];
         
         exercises.forEach(correct => {
