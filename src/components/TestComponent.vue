@@ -279,8 +279,8 @@
           ex9: 'c', // ooOoo
           ex10_1: 'a', // Fashion Trendy
           ex10_2: 'b',  // Eyes sharp
-          ex11_1: ['a', 'b'],
-          ex11_2: ['a', 'b']
+          ex11_1: ['a'],
+          ex11_2: ['c']
         },
         results: [],
         score: 0,
