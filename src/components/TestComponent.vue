@@ -27,7 +27,7 @@
       
       <!-- Exercise 1 - Word Accent -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 1. Choose the correct accent of the words:</h2>
+        <h2 class="text-h6 mb-4">Exercise 1. Match the word with the correct word stress pattern. "O" are stressed syllables, "o" are unstressed.</h2>
         
         <div v-for="(word, index) in accentWords" :key="index" class="mb-4">
           <h3 class="subtitle-1 mb-2">{{ word.word }}</h3>
@@ -152,10 +152,69 @@
           {{ results.ex7 ? 'Correct!' : 'Incorrect!' }}
         </v-alert>
       </v-card>
-      
-      <!-- Exercise 8 - Idioms -->
+
+      <!-- NEW Exercise 8 - Definitions -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 8. Connect the words so that you get an idiom:</h2>
+        <h2 class="text-h6 mb-4">Exercise 8. Choose the right definition.</h2>
+        
+        <div v-for="(item, index) in definitionExercises" :key="index" class="mb-4">
+          <h3 class="subtitle-1 mb-2">{{ item.word }}</h3>
+          <v-radio-group v-model="answers.ex8[index]">
+            <v-radio v-for="(option, optIndex) in item.options" 
+                     :key="optIndex" 
+                     :label="option" 
+                     :value="optIndex"></v-radio>
+          </v-radio-group>
+        </div>
+        
+        <v-btn color="primary" @click="checkExercise('ex8')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex8 !== null" :type="results.ex8 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex8 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- NEW Exercise 9 - Word Associations -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 9. Give the word you associate with:</h2>
+        
+        <div v-for="(item, index) in wordAssociation" :key="index" class="mb-4">
+          <h3 class="subtitle-1 mb-2">Word: {{ item.word }}</h3>
+          <v-radio-group v-model="answers.ex9[index]">
+            <v-radio v-for="(option, optIndex) in item.options" 
+                     :key="optIndex" 
+                     :label="option" 
+                     :value="optIndex"></v-radio>
+          </v-radio-group>
+        </div>
+        
+        <v-btn color="primary" @click="checkExercise('ex9')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex9 !== null" :type="results.ex9 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex9 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- NEW Exercise 10 - General Meaning -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 10. Choose the word with the general meaning:</h2>
+        
+        <div v-for="(item, index) in generalMeaning" :key="index" class="mb-4">
+          <v-radio-group v-model="answers.ex10[index]">
+            <v-radio v-for="(option, optIndex) in item.options" 
+                     :key="optIndex" 
+                     :label="option" 
+                     :value="optIndex"></v-radio>
+          </v-radio-group>
+        </div>
+        
+        <v-btn color="primary" @click="checkExercise('ex10')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex10 !== null" :type="results.ex10 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex10 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- OLD Exercise 8 (now 11) - Idioms -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 11. Connect the words so that you get an idiom:</h2>
         
         <div v-for="(idiom, idiomKey) in idiomExercises" :key="idiomKey" class="mb-8">
           <h3 class="subtitle-1 mb-2">{{ idiomKey.toUpperCase() }}) {{idiom.description}}</h3>
@@ -177,49 +236,49 @@
             @dragover.prevent
             @dragenter.prevent
           >
-            <div v-if="!answers[`ex8${idiomKey}`]" class="placeholder-text">
+            <div v-if="!answers.ex11[idiomKey]" class="placeholder-text">
               Drop words here to form the idiom
             </div>
             <div v-else class="idiom-text">
-              {{ answers[`ex8${idiomKey}`] }}
+              {{ answers.ex11[idiomKey] }}
             </div>
           </div>
           <v-btn 
             small 
-            @click="clearAnswer(`ex8${idiomKey}`)" 
+            @click="clearAnswer('ex11', idiomKey)" 
             class="mt-2 clear-btn"
-            :disabled="!answers[`ex8${idiomKey}`]"
+            :disabled="!answers.ex11[idiomKey]"
           >
             Clear
           </v-btn>
         </div>
-        <v-btn color="primary" @click="checkExercise(8)" class="mt-2">Check</v-btn>
-        <v-alert v-if="results.ex8 !== null" :type="results.ex8 ? 'success' : 'error'" class="mt-2">
-          {{ results.ex8 ? 'Correct!' : 'Incorrect!' }}
+        <v-btn color="primary" @click="checkExercise('ex11')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex11 !== null" :type="results.ex11 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex11 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- OLD Exercise 9 (now 12) - Word Associations -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 12. Match as many adjectives and verbs as possible to one noun "designer"</h2>
+        <v-checkbox v-model="answers.ex12" label="Create" value="Create"></v-checkbox>
+        <v-checkbox v-model="answers.ex12" label="Artistic" value="Artistic"></v-checkbox>
+        <v-checkbox v-model="answers.ex12" label="Take care" value="Take care"></v-checkbox>
+        <v-checkbox v-model="answers.ex12" label="Moody" value="Moody"></v-checkbox>
+        <v-checkbox v-model="answers.ex12" label="Stylish" value="Stylish"></v-checkbox>
+        <v-btn color="primary" @click="checkExercise('ex12')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex12 !== null" :type="results.ex12 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex12 ? 'Correct!' : 'Incorrect!' }}
         </v-alert>
       </v-card>
       
-      <!-- Exercise 9 - Word Associations -->
+      <!-- OLD Exercise 10 (now 13) - Phrase Completion -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 9. Match as many adjectives and verbs as possible to one noun "designer"</h2>
-        <v-checkbox v-model="answers.ex9" label="Create" value="Create"></v-checkbox>
-        <v-checkbox v-model="answers.ex9" label="Artistic" value="Artistic"></v-checkbox>
-        <v-checkbox v-model="answers.ex9" label="Take care" value="Take care"></v-checkbox>
-        <v-checkbox v-model="answers.ex9" label="Moody" value="Moody"></v-checkbox>
-        <v-checkbox v-model="answers.ex9" label="Stylish" value="Stylish"></v-checkbox>
-        <v-btn color="primary" @click="checkExercise(9)" class="mt-2">Check</v-btn>
-        <v-alert v-if="results.ex9 !== null" :type="results.ex9 ? 'success' : 'error'" class="mt-2">
-          {{ results.ex9 ? 'Correct!' : 'Incorrect!' }}
-        </v-alert>
-      </v-card>
-      
-      <!-- Exercise 10 - Phrase Completion -->
-      <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 10. Choose one of the two words to get a phrase:</h2>
+        <h2 class="text-h6 mb-4">Exercise 13. Choose one of the two words to get a phrase:</h2>
         
         <div class="mb-4">
           <h3 class="subtitle-1 mb-2">Fashion ___</h3>
-          <v-radio-group v-model="answers.ex10_1">
+          <v-radio-group v-model="answers.ex13_1">
             <v-radio label="Trendy" value="Trendy"></v-radio>
             <v-radio label="Well-dressed" value="Well-dressed"></v-radio>
           </v-radio-group>
@@ -227,74 +286,114 @@
 
         <div class="mb-4">
           <h3 class="subtitle-1 mb-2">Eyes ___</h3>
-          <v-radio-group v-model="answers.ex10_2">
+          <v-radio-group v-model="answers.ex13_2">
             <v-radio label="comical" value="comical"></v-radio>
             <v-radio label="sharp" value="sharp"></v-radio>
           </v-radio-group>
         </div>
         
-        <v-btn color="primary" @click="checkExercise(10)" class="mt-2">Check</v-btn>
-        <v-alert v-if="results.ex10 !== null" :type="results.ex10 ? 'success' : 'error'" class="mt-2">
-          {{ results.ex10 ? 'Correct!' : 'Incorrect!' }}
+        <v-btn color="primary" @click="checkExercise('ex13')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex13 !== null" :type="results.ex13 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex13 ? 'Correct!' : 'Incorrect!' }}
         </v-alert>
       </v-card>
-      
-      <!-- Exercise 11 - Fill in the Gaps -->
+
+      <!-- NEW Exercise 14 - Translation -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 11. Fill in the gaps in the text:</h2>
+        <h2 class="text-h6 mb-4">Exercise 14. Find the correct translation of phrases:</h2>
+        
+        <div v-for="(item, index) in translationExercises" :key="index" class="mb-4">
+          <h3 class="subtitle-1 mb-2">{{ item.phrase }}</h3>
+          <v-radio-group v-model="answers.ex14[index]">
+            <v-radio v-for="(option, optIndex) in item.options" 
+                     :key="optIndex" 
+                     :label="option" 
+                     :value="optIndex"></v-radio>
+          </v-radio-group>
+        </div>
+        
+        <v-btn color="primary" @click="checkExercise('ex14')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex14 !== null" :type="results.ex14 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex14 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- OLD Exercise 11 (now 15) - Fill in the Gaps -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 15. Fill in the gaps in the text:</h2>
         <p class="mb-4">
           In our busy lives, it's important to take time for ourselves and the
           people we care about. I have a group of 1……
-          <v-select v-model="answers.ex11_1" :items="options.ex11_1" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_1" :items="options.ex15_1" class="d-inline-block" style="width: 150px;"></v-select>
           who I love to 2…... 
-          <v-select v-model="answers.ex11_2" :items="options.ex11_2" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_2" :items="options.ex15_2" class="d-inline-block" style="width: 150px;"></v-select>
           We often spend our weekends together, 3…..
-          <v-select v-model="answers.ex11_3" :items="options.ex11_3" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_3" :items="options.ex15_3" class="d-inline-block" style="width: 150px;"></v-select>
           or 4…... 
-          <v-select v-model="answers.ex11_4" :items="options.ex11_4" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_4" :items="options.ex15_4" class="d-inline-block" style="width: 150px;"></v-select>
           Each of us is unique—some are 5…..
-          <v-select v-model="answers.ex11_5" :items="options.ex11_5" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_5" :items="options.ex15_5" class="d-inline-block" style="width: 150px;"></v-select>
           in a playful way, while others are 6…..
-          <v-select v-model="answers.ex11_6" :items="options.ex11_6" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_6" :items="options.ex15_6" class="d-inline-block" style="width: 150px;"></v-select>
           and 7…... 
-          <v-select v-model="answers.ex11_7" :items="options.ex11_7" class="d-inline-block" style="width: 150px;"></v-select>
+          <v-select v-model="answers.ex15_7" :items="options.ex15_7" class="d-inline-block" style="width: 150px;"></v-select>
           It's this diversity that makes our time together so special.
           Whether we're discussing our favorite songs or sharing ideas for
           new projects, I always look forward to our next get-together!
         </p>
-        <v-btn color="primary" @click="checkExercise(11)" class="mt-2">Check</v-btn>
-        <v-alert v-if="results.ex11 !== null" :type="results.ex11 ? 'success' : 'error'" class="mt-2">
-          {{ results.ex11 ? 'Correct!' : 'Incorrect!' }}
+        <v-btn color="primary" @click="checkExercise('ex15')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex15 !== null" :type="results.ex15 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex15 ? 'Correct!' : 'Incorrect!' }}
         </v-alert>
       </v-card>
       
-      <!-- Exercise 12 - Questions -->
+      <!-- OLD Exercise 12 (now 16) - Questions -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Exercise 12. Put questions to the highlighted words:</h2>
+        <h2 class="text-h6 mb-4">Exercise 16. Put questions to the highlighted words:</h2>
         
         <div class="mb-4">
           <p class="mb-2"><strong>Her outfit was incredibly trendy</strong>, making her the center of attention at the party.</p>
-          <v-checkbox v-model="answers.ex12_1" label="What was her outfit like?" value="What was her outfit like?"></v-checkbox>
-          <v-checkbox v-model="answers.ex12_1" label="Whose outfit was trendy?" value="Whose outfit was trendy?"></v-checkbox>
-          <v-checkbox v-model="answers.ex12_1" label="What made her the center of attention at the party?" value="What made her the center of attention at the party?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_1" label="What was her outfit like?" value="What was her outfit like?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_1" label="Whose outfit was trendy?" value="Whose outfit was trendy?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_1" label="What made her the center of attention at the party?" value="What made her the center of attention at the party?"></v-checkbox>
         </div>
         
         <div class="mb-4">
           <p class="mb-2"><strong>The movie was surprisingly comical</strong>, providing a much-needed laugh after a long week.</p>
-          <v-checkbox v-model="answers.ex12_2" label="Was the movie comical?" value="Was the movie comical?"></v-checkbox>
-          <v-checkbox v-model="answers.ex12_2" label="Why did the movie make you laugh?" value="Why did the movie make you laugh?"></v-checkbox>
-          <v-checkbox v-model="answers.ex12_2" label="What was the movie?" value="What was the movie?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_2" label="Was the movie comical?" value="Was the movie comical?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_2" label="Why did the movie make you laugh?" value="Why did the movie make you laugh?"></v-checkbox>
+          <v-checkbox v-model="answers.ex16_2" label="What was the movie?" value="What was the movie?"></v-checkbox>
         </div>
         
-        <v-btn color="primary" @click="checkExercise(12)" class="mt-2">Check</v-btn>
-        <v-alert v-if="results.ex12 !== null" :type="results.ex12 ? 'success' : 'error'" class="mt-2">
-          {{ results.ex12 ? 'Correct!' : 'Incorrect!' }}
+        <v-btn color="primary" @click="checkExercise('ex16')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex16 !== null" :type="results.ex16 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex16 ? 'Correct!' : 'Incorrect!' }}
+        </v-alert>
+      </v-card>
+
+      <!-- NEW Exercise 17 - Quiz -->
+      <v-card outlined class="mb-6 pa-4">
+        <h2 class="text-h6 mb-4">Exercise 17. Answer the questions:</h2>
+        
+        <div v-for="(item, index) in quizQuestions" :key="index" class="mb-4">
+          <h3 class="subtitle-1 mb-2">{{ item.question }}</h3>
+          <v-radio-group v-model="answers.ex17[index]">
+            <v-radio v-for="(option, optIndex) in item.options" 
+                     :key="optIndex" 
+                     :label="option" 
+                     :value="optIndex"></v-radio>
+          </v-radio-group>
+        </div>
+        
+        <v-btn color="primary" @click="checkExercise('ex17')" class="mt-2">Check</v-btn>
+        <v-alert v-if="results.ex17 !== null" :type="results.ex17 ? 'success' : 'error'" class="mt-2">
+          {{ results.ex17 ? 'Correct!' : 'Incorrect!' }}
         </v-alert>
       </v-card>
       
-      <!-- Test Section -->
+      <!-- Test Section (now Exercise 18) -->
       <v-card outlined class="mb-6 pa-4">
-        <h2 class="text-h6 mb-4">Test</h2>
+        <h2 class="text-h6 mb-4">Exercise 18. Test</h2>
         
         <!-- Test Question 1 -->
         <div class="mb-6">
@@ -365,43 +464,37 @@ export default {
   data() {
     return {
       answers: {
-        // Exercise 1
         ex1: [],
-        // Exercise 2
         ex2: [],
-        // Exercise 3
         ex3: [],
-        // Exercise 4
         ex4: [],
-        // Exercise 5
         ex5: [],
-        // Exercise 6
         ex6: [],
-        // Exercise 7
         ex7: [],
-        // Exercise 8
-        ex8a: '',
-        ex8b: '',
-        ex8c: '',
-        ex8d: '',
-        ex8e: '',
-        // Exercise 9
+        ex8: [],
         ex9: [],
-        // Exercise 10
-        ex10_1: null,
-        ex10_2: null,
-        // Exercise 11
-        ex11_1: null,
-        ex11_2: null,
-        ex11_3: null,
-        ex11_4: null,
-        ex11_5: null,
-        ex11_6: null,
-        ex11_7: null,
-        // Exercise 12
-        ex12_1: [],
-        ex12_2: [],
-        // Test answers
+        ex10: [],
+        ex11: {
+          a: '',
+          b: '',
+          c: '',
+          d: '',
+          e: ''
+        },
+        ex12: [],
+        ex13_1: null,
+        ex13_2: null,
+        ex14: [],
+        ex15_1: null,
+        ex15_2: null,
+        ex15_3: null,
+        ex15_4: null,
+        ex15_5: null,
+        ex15_6: null,
+        ex15_7: null,
+        ex16_1: [],
+        ex16_2: [],
+        ex17: [],
         test1_1: null,
         test1_2: null,
         test1_3: null,
@@ -486,14 +579,204 @@ export default {
           words: ["on", "get", "nerves"]
         }
       },
+      definitionExercises: [
+        {
+          word: "Friendly",
+          options: [
+            "Always smiles and is approachable",
+            "Often keeps to themselves and avoids conversation",
+            "Is indifferent to the feelings of others",
+            "Prefers to be alone and rarely engages with others"
+          ]
+        },
+        {
+          word: "Creative",
+          options: [
+            "Enjoys thinking outside the box and making new things",
+            "Follows strict rules without any variation",
+            "Only works with established ideas and methods",
+            "Avoids artistic activities and prefers manual labor"
+          ]
+        },
+        {
+          word: "Confident",
+          options: [
+            "Often feels insecure and doubts their abilities",
+            "Believes in their skills and expresses themselves clearly",
+            "Frequently seeks approval from others before making decisions",
+            "Is shy and avoids leadership roles"
+          ]
+        },
+        {
+          word: "Caring",
+          options: [
+            "Shows concern for others' well-being",
+            "Is indifferent to the needs of others",
+            "Only focuses on their own interests",
+            "Enjoys making fun of others' problems"
+          ]
+        },
+        {
+          word: "Charismatic",
+          options: [
+            "Has a magnetic personality that draws people in",
+            "Is uninteresting and rarely engages others",
+            "Prefers solitary activities over social gatherings",
+            "Often makes others uncomfortable with their presence"
+          ]
+        },
+        {
+          word: "Stylish",
+          options: [
+            "Always dresses in a way that reflects modern trends",
+            "Wears mismatched clothes without any consideration",
+            "Prefers practical clothing regardless of fashion",
+            "Is unconcerned about their appearance"
+          ]
+        },
+        {
+          word: "Generous",
+          options: [
+            "Frequently shares their resources and supports others",
+            "Hoards possessions and refuses to share",
+            "Only helps when it benefits them personally",
+            "Is unaware of others' needs and lacks compassion"
+          ]
+        }
+      ],
+      wordAssociation: [
+        {
+          word: "Outgoing",
+          options: ["Friendly", "Reserve", "Sociable"]
+        },
+        {
+          word: "Generous",
+          options: ["Selfish", "Kind", "Greedy"]
+        },
+        {
+          word: "Charming",
+          options: ["Charismatic", "Awkward", "Attractive"]
+        },
+        {
+          word: "Shy",
+          options: ["Introverted", "Confident", "Loud"]
+        },
+        {
+          word: "Elegant",
+          options: ["Graceful", "Clumsy", "Stylish"]
+        },
+        {
+          word: "Supportive",
+          options: ["Understanding", "Dismissive", "Encouraging"]
+        },
+        {
+          word: "Daring",
+          options: ["Fearless", "Cautious", "Bold"]
+        }
+      ],
+      generalMeaning: [
+        {
+          options: ["Tall", "Slim", "Appearance", "Athletic"]
+        },
+        {
+          options: ["Caring", "Friendly", "Personality", "Rude"]
+        },
+        {
+          options: ["Stylish", "Elegant", "Fashion", "Trendy"]
+        },
+        {
+          options: ["Confident", "Shy", "Character", "Introverted"]
+        },
+        {
+          options: ["Creative", "Imaginative", "Artistic", "Dull"]
+        },
+        {
+          options: ["Generous", "Selfish", "Nature", "Giving"]
+        },
+        {
+          options: ["Charismatic", "Boring", "Charm", "Dull"]
+        }
+      ],
+      translationExercises: [
+        {
+          phrase: "Tall and slim",
+          options: [
+            "Высокий и стройный",
+            "Маленький и полный",
+            "Широкий и крепкий"
+          ]
+        },
+        {
+          phrase: "Bright smile",
+          options: [
+            "Яркая улыбка",
+            "Тоскливая улыбка",
+            "Неприветливая улыбка"
+          ]
+        },
+        {
+          phrase: "Friendly personality",
+          options: [
+            "Дружелюбный характер",
+            "Закрытый характер",
+            "Холодный характер"
+          ]
+        },
+        {
+          phrase: "Curly hair",
+          options: [
+            "Прямые волосы",
+            "Кудрявые волосы",
+            "Короткие волосы"
+          ]
+        },
+        {
+          phrase: "Generous nature",
+          options: [
+            "Щедрая натура",
+            "Жадная натура",
+            "Упрямая натура"
+          ]
+        },
+        {
+          phrase: "Deep blue eyes",
+          options: [
+            "Светло-зеленые глаза",
+            "Темно-карие глаза",
+            "Глубокие синие глаза"
+          ]
+        },
+        {
+          phrase: "Confident demeanor",
+          options: [
+            "Уверенное поведение",
+            "Неуверенное поведение",
+            "Скромное поведение"
+          ]
+        }
+      ],
+      quizQuestions: [
+        {
+          question: "What word describes someone who is very attractive?",
+          options: ["Ugly", "Beautiful", "Shy"]
+        },
+        {
+          question: "Which term refers to a person's nature or disposition?",
+          options: ["Appearance", "Personality", "Hair"]
+        },
+        {
+          question: "What do you call someone who is always happy and cheerful?",
+          options: ["Moody", "Serious", "Joyful"]
+        }
+      ],
       options: {
-        ex11_1: ['Respected', 'slender', 'bloomed'],
-        ex11_2: ['Go on trip', 'hang out with', 'do sport'],
-        ex11_3: ['Chat online', 'send text', 'do voluntary work'],
-        ex11_4: ['Listen to music', 'play games', 'send emails'],
-        ex11_5: ['aggressive', 'mean', 'disonest'],
-        ex11_6: ['Thoughtful', 'well-meaning', 'decisive'],
-        ex11_7: ['Brightened', 'Creative', 'trendy'],
+        ex15_1: ['Respected', 'slender', 'bloomed'],
+        ex15_2: ['Go on trip', 'hang out with', 'do sport'],
+        ex15_3: ['Chat online', 'send text', 'do voluntary work'],
+        ex15_4: ['Listen to music', 'play games', 'send emails'],
+        ex15_5: ['aggressive', 'mean', 'disonest'],
+        ex15_6: ['Thoughtful', 'well-meaning', 'decisive'],
+        ex15_7: ['Brightened', 'Creative', 'trendy'],
         test1: ['charming', 'athletic', 'unique', 'confident', 'kindhearted']
       },
       testDefinitions: [
@@ -597,60 +880,49 @@ export default {
         }
       ],
       correctAnswers: {
-        // Exercise 1
         ex1: ["oOo", "Ooo", "ooOoo", "Oooo", "oOoo", "oOo", "oOoo"],
-        // Exercise 2
         ex2: ["[ˈpeɪʃnt]", "[ˈʤeləs]", "[dɪsˈɒnɪst]", "[səˈpɔːtɪv]", "[pɜːsəˈnælɪtɪ]", "[ˈkaʊntlɪs]", "[ˈkʌmf(ə)təb(ə)l]"],
-        // Exercise 3
         ex3: ["Honest", "Violent", "Caring", "Identity", "Thick", "Crucial", "Thin"],
-        // Exercise 4
         ex4: ["Jealous", "Kind", "Blue", "Fast", "Long", "Intelligent"],
-        // Exercise 5
         ex5: ["Jealous", "Mean", "Moody"],
-        // Exercise 6
         ex6: ["Take care", "Watch"],
-        // Exercise 7
         ex7: ["Adjective", "Noun", "Verb", "Verb", "Adjective", "Noun", "Adjective"],
-        // Exercise 8
-        ex8a: "a bear with a sore head",
-        ex8b: "give the cold shoulder",
-        ex8c: "be a pain in the neck",
-        ex8d: "get off my back",
-        ex8e: "get on nerves",
-        // Exercise 9
-        ex9: ["Create", "Artistic", "Stylish"],
-        // Exercise 10
-        ex10_1: "Trendy",
-        ex10_2: "sharp",
-        // Exercise 11
-        ex11_1: "Respected",
-        ex11_2: "hang out with",
-        ex11_3: "Chat online",
-        ex11_4: "play games",
-        ex11_5: "aggressive",
-        ex11_6: "well-meaning",
-        ex11_7: "Creative",
-        // Exercise 12
-        ex12_1: ["What was her outfit like?"],
-        ex12_2: ["What was the movie?"],
-        // Test answers
-        test1_1: "kindhearted",
-        test1_2: "charming",
-        test1_3: "unique",
-        test1_4: "athletic",
-        test1_5: "confident",
-        test2_1: "being kind and pleasant to others.",
-        test2_2: "having a strong belief in oneself and one's abilities.",
-        test2_3: "being the only one of its kind, unlike anything else.",
-        test2_4: "delightful and pleasing in a way that attracts others.",
-        test2_5: "physically fit and skilled in sports or physical activities.",
-        test3_1: "look very impressive.",
-        test3_2: "want to get to know him better.",
-        test3_3: "achieve their goals.",
-        test3_4: "excels in physical activities.",
-        test3_5: "volunteers in the community.",
-        test3_6: "stand out in any event.",
-        test3_7: "makes everyone laugh."
+        ex8: [0, 0, 1, 0, 0, 0, 0],
+        ex9: [2, 1, 0, 0, 0, 2, 0],
+        ex10: [2, 2, 2, 2, 2, 2, 0],
+        ex11: {
+          a: "a bear with a sore head",
+          b: "give the cold shoulder",
+          c: "be a pain in the neck",
+          d: "get off my back",
+          e: "get on nerves"
+        },
+        ex12: ["Create", "Artistic", "Stylish"],
+        ex13: ["Trendy", "sharp"],
+        ex14: [0, 0, 0, 1, 0, 2, 0],
+        ex15: ["Respected", "hang out with", "Chat online", "play games", "aggressive", "well-meaning", "Creative"],
+        ex16: [
+          ["What was her outfit like?"],
+          ["What was the movie?"]
+        ],
+        ex17: [1, 1, 2],
+        test1: ["kindhearted", "charming", "unique", "athletic", "confident"],
+        test2: [
+          "being kind and pleasant to others.",
+          "having a strong belief in oneself and one's abilities.",
+          "being the only one of its kind, unlike anything else.",
+          "delightful and pleasing in a way that attracts others.",
+          "physically fit and skilled in sports or physical activities."
+        ],
+        test3: [
+          "look very impressive.",
+          "want to get to know him better.",
+          "achieve their goals.",
+          "excels in physical activities.",
+          "volunteers in the community.",
+          "stand out in any event.",
+          "makes everyone laugh."
+        ]
       },
       results: {
         ex1: null,
@@ -664,7 +936,12 @@ export default {
         ex9: null,
         ex10: null,
         ex11: null,
-        ex12: null
+        ex12: null,
+        ex13: null,
+        ex14: null,
+        ex15: null,
+        ex16: null,
+        ex17: null
       },
       testResult: null,
       draggedWord: null,
@@ -687,111 +964,90 @@ export default {
     onDrop(event, targetIdiomKey) {
       event.preventDefault();
       if (this.draggedIdiomKey === targetIdiomKey) {
-        const currentAnswer = this.answers[`ex6${targetIdiomKey}`];
+        const currentAnswer = this.answers.ex11[targetIdiomKey];
         if (!currentAnswer || currentAnswer !== this.draggedWord) {
-          this.answers[`ex6${targetIdiomKey}`] = currentAnswer 
-            ? `${currentAnswer} ${this.draggedWord}` 
-            : this.draggedWord;
+          this.$set(this.answers.ex11, targetIdiomKey, 
+            currentAnswer ? `${currentAnswer} ${this.draggedWord}` : this.draggedWord);
         }
       }
     },
     
-    clearAnswer(field) {
-      this.answers[field] = '';
+    clearAnswer(field, subfield = null) {
+      if (subfield) {
+        this.$set(this.answers[field], subfield, '');
+      } else {
+        this.$set(this.answers, field, Array.isArray(this.answers[field]) ? [] : '');
+      }
     },
     
-    checkExercise(exerciseNumber) {
-    switch(exerciseNumber) {
-      case 1:
-        this.results.ex1 = JSON.stringify(this.answers.ex1) === 
-                          JSON.stringify(this.correctAnswers.ex1);
-        break;
-      case 2:
-        this.results.ex2 = JSON.stringify(this.answers.ex2) === 
-                          JSON.stringify(this.correctAnswers.ex2);
-        break;
-      case 3:
-        this.results.ex3 = JSON.stringify(this.answers.ex3) === 
-                          JSON.stringify(this.correctAnswers.ex3);
-        break;
-      case 4:
-        this.results.ex4 = JSON.stringify(this.answers.ex4) === 
-                          JSON.stringify(this.correctAnswers.ex4);
-        break;
-      case 5:
-        this.results.ex5 = JSON.stringify([...this.answers.ex5].sort()) === 
-                          JSON.stringify([...this.correctAnswers.ex5].sort());
-        break;
-      case 6:
-        this.results.ex6 = JSON.stringify([...this.answers.ex6].sort()) === 
-                          JSON.stringify([...this.correctAnswers.ex6].sort());
-        break;
-      case 7:
-        this.results.ex7 = JSON.stringify(this.answers.ex7) === 
-                          JSON.stringify(this.correctAnswers.ex7);
-        break;
-      case 8:
-        this.results.ex8 = (
-          this.answers.ex8a.toLowerCase().replace(/\s+/g, ' ') === this.correctAnswers.ex8a.toLowerCase() &&
-          this.answers.ex8b.toLowerCase().replace(/\s+/g, ' ') === this.correctAnswers.ex8b.toLowerCase() &&
-          this.answers.ex8c.toLowerCase().replace(/\s+/g, ' ') === this.correctAnswers.ex8c.toLowerCase() &&
-          this.answers.ex8d.toLowerCase().replace(/\s+/g, ' ') === this.correctAnswers.ex8d.toLowerCase() &&
-          this.answers.ex8e.toLowerCase().replace(/\s+/g, ' ') === this.correctAnswers.ex8e.toLowerCase()
-        );
-        break;
-      case 9:
-        this.results.ex9 = JSON.stringify([...this.answers.ex9].sort()) === 
-                          JSON.stringify([...this.correctAnswers.ex9].sort());
-        break;
-      case 10:
-        this.results.ex10 = (
-          this.answers.ex10_1 === this.correctAnswers.ex10_1 &&
-          this.answers.ex10_2 === this.correctAnswers.ex10_2
-        );
-        break;
-      case 11:
-        this.results.ex11 = (
-          this.answers.ex11_1 === this.correctAnswers.ex11_1 &&
-          this.answers.ex11_2 === this.correctAnswers.ex11_2 &&
-          this.answers.ex11_3 === this.correctAnswers.ex11_3 &&
-          this.answers.ex11_4 === this.correctAnswers.ex11_4 &&
-          this.answers.ex11_5 === this.correctAnswers.ex11_5 &&
-          this.answers.ex11_6 === this.correctAnswers.ex11_6 &&
-          this.answers.ex11_7 === this.correctAnswers.ex11_7
-        );
-        break;
-      case 12:
-        this.results.ex12 = (
-          JSON.stringify([...this.answers.ex12_1].sort()) === JSON.stringify([...this.correctAnswers.ex12_1].sort()) &&
-          JSON.stringify([...this.answers.ex12_2].sort()) === JSON.stringify([...this.correctAnswers.ex12_2].sort())
-        );
-        break;
-    }
-  },
-
-  checkTest() {
-    const testCorrect = (
-      this.answers.test1_1 === this.correctAnswers.test1_1 &&
-      this.answers.test1_2 === this.correctAnswers.test1_2 &&
-      this.answers.test1_3 === this.correctAnswers.test1_3 &&
-      this.answers.test1_4 === this.correctAnswers.test1_4 &&
-      this.answers.test1_5 === this.correctAnswers.test1_5 &&
-      this.answers.test2_1 === this.correctAnswers.test2_1 &&
-      this.answers.test2_2 === this.correctAnswers.test2_2 &&
-      this.answers.test2_3 === this.correctAnswers.test2_3 &&
-      this.answers.test2_4 === this.correctAnswers.test2_4 &&
-      this.answers.test2_5 === this.correctAnswers.test2_5 &&
-      this.answers.test3_1 === this.correctAnswers.test3_1 &&
-      this.answers.test3_2 === this.correctAnswers.test3_2 &&
-      this.answers.test3_3 === this.correctAnswers.test3_3 &&
-      this.answers.test3_4 === this.correctAnswers.test3_4 &&
-      this.answers.test3_5 === this.correctAnswers.test3_5 &&
-      this.answers.test3_6 === this.correctAnswers.test3_6 &&
-      this.answers.test3_7 === this.correctAnswers.test3_7
-    );
+    checkExercise(exercise) {
+      if (typeof exercise === 'number') {
+        // Для старых упражнений 1-7
+        const userAnswers = this.answers[`ex${exercise}`];
+        const correctAnswers = this.correctAnswers[`ex${exercise}`];
+        this.results[`ex${exercise}`] = JSON.stringify(userAnswers) === JSON.stringify(correctAnswers);
+      } else {
+        // Для новых упражнений
+        const exNum = exercise.replace('ex', '');
+        const userAnswers = this.answers[exercise];
+        const correctAnswers = this.correctAnswers[exercise];
+        
+        if (exercise === 'ex11') {
+          // Особый случай для упражнения с идиомами
+          let allCorrect = true;
+          for (const key in correctAnswers) {
+            if (userAnswers[key]?.toLowerCase().replace(/\s+/g, ' ') !== 
+                correctAnswers[key].toLowerCase()) {
+              allCorrect = false;
+              break;
+            }
+          }
+          this.results.ex11 = allCorrect;
+        } 
+        else if (exercise === 'ex13') {
+          // Проверка для упражнения 13 (бывшее 10)
+          this.results.ex13 = (
+            userAnswers._1 === correctAnswers[0] &&
+            userAnswers._2 === correctAnswers[1]
+          );
+        }
+        else if (exercise === 'ex16') {
+          // Проверка для упражнения 16 (бывшее 12)
+          this.results.ex16 = (
+            JSON.stringify([...userAnswers._1].sort()) === JSON.stringify([...correctAnswers[0]].sort()) &&
+            JSON.stringify([...userAnswers._2].sort()) === JSON.stringify([...correctAnswers[1]].sort())
+          );
+        }
+        else {
+          // Стандартная проверка для остальных упражнений
+          this.results[exercise] = JSON.stringify(userAnswers) === JSON.stringify(correctAnswers);
+        }
+      }
+    },
     
-    this.testResult = testCorrect;
-  },
+    checkTest() {
+      const testCorrect = (
+        this.answers.test1_1 === this.correctAnswers.test1[0] &&
+        this.answers.test1_2 === this.correctAnswers.test1[1] &&
+        this.answers.test1_3 === this.correctAnswers.test1[2] &&
+        this.answers.test1_4 === this.correctAnswers.test1[3] &&
+        this.answers.test1_5 === this.correctAnswers.test1[4] &&
+        this.answers.test2_1 === this.correctAnswers.test2[0] &&
+        this.answers.test2_2 === this.correctAnswers.test2[1] &&
+        this.answers.test2_3 === this.correctAnswers.test2[2] &&
+        this.answers.test2_4 === this.correctAnswers.test2[3] &&
+        this.answers.test2_5 === this.correctAnswers.test2[4] &&
+        this.answers.test3_1 === this.correctAnswers.test3[0] &&
+        this.answers.test3_2 === this.correctAnswers.test3[1] &&
+        this.answers.test3_3 === this.correctAnswers.test3[2] &&
+        this.answers.test3_4 === this.correctAnswers.test3[3] &&
+        this.answers.test3_5 === this.correctAnswers.test3[4] &&
+        this.answers.test3_6 === this.correctAnswers.test3[5] &&
+        this.answers.test3_7 === this.correctAnswers.test3[6]
+      );
+      
+      this.testResult = testCorrect;
+    }
   }
 }
 </script>
